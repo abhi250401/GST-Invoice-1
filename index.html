@@ -1,383 +1,205 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GST Invoice</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<title>GST Invoice</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: white;
-            padding: 40px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .invoice-header {
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 3px solid #333;
-            padding-bottom: 20px;
-        }
-
-        .invoice-header h1 {
-            font-size: 32px;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .invoice-header p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .details-section {
-            display: flex;
-            gap: 50px;
-            margin-bottom: 40px;
-            justify-content: space-between;
-        }
-
-        .detail-box {
-            flex: 1;
-        }
-
-        .detail-box h3 {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 8px;
-        }
-
-        .detail-box p {
-            font-size: 14px;
-            color: #555;
-            line-height: 1.8;
-            margin-bottom: 5px;
-        }
-
-        .detail-box strong {
-            color: #333;
-        }
-
-        .products-section {
-            margin-bottom: 40px;
-        }
-
-        .products-section h3 {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 8px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        table thead {
-            background-color: #007bff;
-            color: white;
-        }
-
-        table th {
-            padding: 12px;
-            text-align: left;
-            font-weight: bold;
-            border: 1px solid #ddd;
-        }
-
-        table td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-
-        table tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        table tbody tr:hover {
-            background-color: #f0f0f0;
-        }
-
-        .amount-section {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 40px;
-        }
-
-        .amount-box {
-            width: 350px;
-        }
-
-        .amount-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-            font-size: 14px;
-        }
-
-        .amount-row.total {
-            font-weight: bold;
-            font-size: 16px;
-            color: #007bff;
-            padding: 15px 0;
-            border-bottom: 2px solid #007bff;
-        }
-
-        .bank-details {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-left: 4px solid #007bff;
-            margin-top: 20px;
-        }
-
-        .bank-details h4 {
-            font-size: 14px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 12px;
-        }
-
-        .bank-details p {
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 8px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
-            color: #666;
-            font-size: 12px;
-        }
-
-        .action-buttons {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .btn {
-            padding: 10px 25px;
-            margin: 0 10px;
-            font-size: 14px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-print {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .btn-print:hover {
-            background-color: #0056b3;
-        }
-
-        .btn-download {
-            background-color: #28a745;
-            color: white;
-        }
-
-        .btn-download:hover {
-            background-color: #218838;
-        }
-
-        @media (max-width: 768px) {
-            .details-section {
-                flex-direction: column;
-                gap: 30px;
-            }
-
-            .amount-section {
-                justify-content: center;
-            }
-
-            .container {
-                padding: 20px;
-            }
-
-            .invoice-header h1 {
-                font-size: 24px;
-            }
-        }
-
-        @media print {
-            body {
-                background-color: white;
-                padding: 0;
-            }
-
-            .action-buttons {
-                display: none;
-            }
-
-            .container {
-                box-shadow: none;
-                padding: 0;
-            }
-        }
-    </style>
+<style>
+body{font-family:Segoe UI,Arial,sans-serif;background:#f2f2f2;padding:20px;font-size:13px}
+.container{max-width:950px;margin:auto;background:#fff;border:1px solid #000}
+.section{padding:12px;border-bottom:1px solid #000}
+h2{font-size:15px;margin-bottom:8px;border-bottom:1px solid #000}
+input{padding:6px;width:100%;border:1px solid #999}
+.flex{display:flex;gap:10px}
+.box{width:50%}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border:1px solid #000;padding:6px}
+th{background:#eaeaea}
+.text-right{text-align:right}
+.text-center{text-align:center}
+button{padding:8px 12px;background:#1a237e;color:#fff;border:none;font-weight:600;cursor:pointer}
+.btns{margin-top:15px;display:flex;gap:10px}
+.hide{display:none}
+.small{font-size:12px}
+@media print{.btns,.form{display:none}body{background:#fff;padding:0}}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <!-- Invoice Header -->
-        <div class="invoice-header">
-            <h1>GST INVOICE</h1>
-            <p>Invoice #: INV-2025-001 | Date: 2025-12-29</p>
-        </div>
 
-        <!-- Seller and Buyer Details Side by Side -->
-        <div class="details-section">
-            <!-- Seller Details -->
-            <div class="detail-box">
-                <h3>Seller Details</h3>
-                <p><strong>Name:</strong> ABC Company Pvt. Ltd.</p>
-                <p><strong>Address:</strong> 123 Business Street, New Delhi, Delhi 110001</p>
-                <p><strong>GST ID:</strong> 07AABCT1234F1Z0</p>
-                <p><strong>Email:</strong> info@abccompany.com</p>
-                <p><strong>Phone:</strong> +91-11-1234-5678</p>
-            </div>
+<!-- ================= FORM ================= -->
+<div class="container form">
 
-            <!-- Buyer Details -->
-            <div class="detail-box">
-                <h3>Buyer Details</h3>
-                <p><strong>Name:</strong> XYZ Corporation</p>
-                <p><strong>Address:</strong> 456 Commerce Avenue, Mumbai, Maharashtra 400001</p>
-                <p><strong>GST ID:</strong> 27AABCT5678H1Z5</p>
-                <p><strong>Email:</strong> contact@xyzcorp.com</p>
-                <p><strong>Phone:</strong> +91-22-8765-4321</p>
-            </div>
-        </div>
+<div class="section">
+<h2>Seller Details</h2>
+<div class="flex">
+<input id="sName" placeholder="Seller Name" value="POONAM ENTERPRISES">
+<input id="sGstin" placeholder="GSTIN" value="24HDE7487RE5RT4">
+</div><br>
+<input id="sAddr" placeholder="Address" value="E-251/C, Shyam Vihar, Najafgarh, Delhi-43"><br><br>
+<input id="sBank" placeholder="Bank Details" value="SBI | A/C 2000000004512 | IFSC SBIN0000488">
+</div>
 
-        <!-- Products Section -->
-        <div class="products-section">
-            <h3>Products/Services</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>S.No.</th>
-                        <th>Product/Service Description</th>
-                        <th>Qty</th>
-                        <th>Unit Price (₹)</th>
-                        <th>Tax Rate (%)</th>
-                        <th>Tax Amount (₹)</th>
-                        <th>Total (₹)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Professional Consultation Services</td>
-                        <td>10</td>
-                        <td>1,000.00</td>
-                        <td>18%</td>
-                        <td>1,800.00</td>
-                        <td>11,800.00</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Software License (Annual)</td>
-                        <td>1</td>
-                        <td>5,000.00</td>
-                        <td>18%</td>
-                        <td>900.00</td>
-                        <td>5,900.00</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Support & Maintenance</td>
-                        <td>5</td>
-                        <td>500.00</td>
-                        <td>18%</td>
-                        <td>450.00</td>
-                        <td>2,950.00</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<div class="section">
+<h2>Buyer Details</h2>
+<div class="flex">
+<input id="bName" placeholder="Buyer Name">
+<input id="bPhone" placeholder="Phone">
+</div><br>
+<input id="bAddr" placeholder="Address"><br><br>
+<input id="bGstin" placeholder="GSTIN">
+</div>
 
-        <!-- Amount Section -->
-        <div class="amount-section">
-            <div class="amount-box">
-                <div class="amount-row">
-                    <span>Subtotal:</span>
-                    <span>₹ 16,000.00</span>
-                </div>
-                <div class="amount-row">
-                    <span>SGST (9%):</span>
-                    <span>₹ 1,440.00</span>
-                </div>
-                <div class="amount-row">
-                    <span>CGST (9%):</span>
-                    <span>₹ 1,440.00</span>
-                </div>
-                <div class="amount-row">
-                    <span>Discount:</span>
-                    <span>- ₹ 0.00</span>
-                </div>
-                <div class="amount-row total">
-                    <span>Total Amount Due:</span>
-                    <span>₹ 18,880.00</span>
-                </div>
-            </div>
-        </div>
+<div class="section">
+<h2>Products</h2>
+<table>
+<thead>
+<tr>
+<th>Description</th><th>HSN</th><th>Qty</th><th>Rate</th><th>GST %</th><th>Action</th>
+</tr>
+</thead>
+<tbody id="prodBody"></tbody>
+</table>
+<br>
+<button onclick="addRow()">+ Add Product</button>
+</div>
 
-        <!-- Bank Details Section -->
-        <div class="bank-details">
-            <h4>Bank Details for Payment</h4>
-            <p><strong>Account Holder Name:</strong> ABC Company Pvt. Ltd.</p>
-            <p><strong>Bank Name:</strong> State Bank of India (SBI)</p>
-            <p><strong>Account Number:</strong> 1234567890123456</p>
-            <p><strong>IFSC Code:</strong> SBIN0001234</p>
-            <p><strong>Branch:</strong> New Delhi Main Branch</p>
-            <p><strong>UPI ID:</strong> abccompany@sbi</p>
-            <p style="margin-top: 12px; color: #d9534f;"><strong>Note:</strong> Please mention Invoice #INV-2025-001 while making the payment.</p>
-        </div>
+<div class="btns">
+<button onclick="generate()">Generate Invoice</button>
+</div>
+</div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>This is a computer-generated invoice. No signature is required.</p>
-            <p>© 2025 ABC Company Pvt. Ltd. All rights reserved.</p>
-        </div>
+<!-- ================= INVOICE ================= -->
+<div class="container hide" id="invoice">
 
-        <!-- Action Buttons -->
-        <div class="action-buttons">
-            <button class="btn btn-print" onclick="window.print()">🖨️ Print</button>
-            <button class="btn btn-download" onclick="downloadPDF()">📥 Download PDF</button>
-        </div>
-    </div>
+<div class="section text-center">
+<h2>TAX INVOICE</h2>
+<div class="small">Invoice No: <span id="invNo"></span> | Date: <span id="invDate"></span></div>
+</div>
 
-    <script>
-        function downloadPDF() {
-            alert('PDF download functionality would be implemented here using a library like jsPDF or similar.');
-            // In a real implementation, you would use jsPDF or similar library
-            // window.print() can also be used as an alternative
-        }
-    </script>
+<div class="section flex">
+<div class="box">
+<b>Seller</b><br>
+<span id="isName"></span><br>
+<span id="isAddr"></span><br>
+GSTIN: <span id="isGstin"></span>
+</div>
+<div class="box">
+<b>Buyer</b><br>
+<span id="ibName"></span><br>
+<span id="ibAddr"></span><br>
+Phone: <span id="ibPhone"></span><br>
+GSTIN: <span id="ibGstin"></span>
+</div>
+</div>
+
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Sr</th><th>Description</th><th>HSN</th><th>Qty</th><th>Rate</th>
+<th>Taxable</th><th>CGST</th><th>SGST</th><th>Total</th>
+</tr>
+</thead>
+<tbody id="invRows"></tbody>
+</table>
+</div>
+
+<div class="section flex">
+<div class="box">
+<b>Amount in Words</b><br>
+<span id="words"></span>
+</div>
+<div class="box">
+<div>Taxable: ₹ <span id="tTaxable"></span></div>
+<div>CGST: ₹ <span id="tCgst"></span></div>
+<div>SGST: ₹ <span id="tSgst"></span></div>
+<b>Grand Total: ₹ <span id="tGrand"></span></b>
+</div>
+</div>
+
+<div class="section flex">
+<div class="box">
+<b>Bank Details</b><br>
+<span id="isBank"></span>
+</div>
+<div class="box text-center">
+For <span id="isName2"></span><br><br>
+Authorised Signatory
+</div>
+</div>
+
+<div class="btns">
+<button onclick="window.print()">Print / Save PDF</button>
+<button onclick="location.reload()">Back</button>
+</div>
+</div>
+
+<script>
+let count=0;
+function addRow(){
+    prodBody.innerHTML+=`
+    <tr>
+    <td><input></td>
+    <td><input></td>
+    <td><input type="number"></td>
+    <td><input type="number"></td>
+    <td><input type="number" value="18"></td>
+    <td class="text-center"><button onclick="this.parentElement.parentElement.remove()">X</button></td>
+    </tr>`;
+}
+addRow();
+
+function generate(){
+    invNo.innerText="GST-"+Date.now().toString().slice(-6);
+    invDate.innerText=new Date().toLocaleDateString();
+
+    isName.innerText=isName2.innerText=sName.value;
+    isAddr.innerText=sAddr.value;
+    isGstin.innerText=sGstin.value;
+    isBank.innerText=sBank.value;
+
+    ibName.innerText=bName.value;
+    ibAddr.innerText=bAddr.value;
+    ibPhone.innerText=bPhone.value;
+    ibGstin.innerText=bGstin.value;
+
+    let rows="",taxable=0,cgst=0,sgst=0,total=0;
+    [...prodBody.children].forEach((r,i)=>{
+        let d=r.children;
+        let q=+d[2].firstChild.value;
+        let rate=+d[3].firstChild.value;
+        let gst=+d[4].firstChild.value;
+        let t=q*rate;
+        let tax=t*gst/100;
+        let half=tax/2;
+        rows+=`
+        <tr>
+        <td class="text-center">${i+1}</td>
+        <td>${d[0].firstChild.value}</td>
+        <td class="text-center">${d[1].firstChild.value}</td>
+        <td class="text-center">${q}</td>
+        <td class="text-right">${rate}</td>
+        <td class="text-right">${t.toFixed(2)}</td>
+        <td class="text-right">${half.toFixed(2)}</td>
+        <td class="text-right">${half.toFixed(2)}</td>
+        <td class="text-right">${(t+tax).toFixed(2)}</td>
+        </tr>`;
+        taxable+=t; cgst+=half; sgst+=half; total+=t+tax;
+    });
+
+    invRows.innerHTML=rows;
+    tTaxable.innerText=taxable.toFixed(2);
+    tCgst.innerText=cgst.toFixed(2);
+    tSgst.innerText=sgst.toFixed(2);
+    tGrand.innerText=total.toFixed(2);
+    words.innerText=Math.floor(total)+" Rupees Only";
+
+    document.querySelector('.form').classList.add('hide');
+    invoice.classList.remove('hide');
+}
+</script>
+
 </body>
 </html>
