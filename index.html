@@ -1,28 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>GST Invoice</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-body{font-family:Segoe UI,Arial,sans-serif;background:#f2f2f2;padding:20px;font-size:13px}
-.container{max-width:950px;margin:auto;background:#fff;border:1px solid #000}
-.section{padding:12px;border-bottom:1px solid #000}
-h2{font-size:15px;margin-bottom:8px;border-bottom:1px solid #000}
-input{padding:6px;width:100%;border:1px solid #999}
-.flex{display:flex;gap:10px}
-.box{width:50%}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{border:1px solid #000;padding:6px}
-th{background:#eaeaea}
+/* ===== MOBILE FIRST ===== */
+body{
+    font-family: system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+    background:#f2f2f2;
+    margin:0;
+    padding:10px;
+    font-size:14px;
+}
+.container{
+    background:#fff;
+    border:1px solid #000;
+    margin-bottom:15px;
+}
+.section{
+    padding:12px;
+    border-bottom:1px solid #000;
+}
+h2{
+    font-size:15px;
+    margin:0 0 8px;
+    border-bottom:1px solid #000;
+    padding-bottom:4px;
+}
+input{
+    width:100%;
+    padding:10px;
+    border:1px solid #999;
+    font-size:14px;
+}
+.grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+}
+th,td{
+    border:1px solid #000;
+    padding:6px;
+}
+th{
+    background:#eaeaea;
+}
 .text-right{text-align:right}
 .text-center{text-align:center}
-button{padding:8px 12px;background:#1a237e;color:#fff;border:none;font-weight:600;cursor:pointer}
-.btns{margin-top:15px;display:flex;gap:10px}
+button{
+    padding:10px;
+    width:100%;
+    background:#1a237e;
+    color:#fff;
+    border:none;
+    font-weight:600;
+    font-size:14px;
+}
+.btn-secondary{
+    background:#444;
+}
 .hide{display:none}
-.small{font-size:12px}
-@media print{.btns,.form{display:none}body{background:#fff;padding:0}}
+
+/* ===== DESKTOP ===== */
+@media (min-width:768px){
+    body{padding:20px;font-size:13px}
+    .grid-2{grid-template-columns:1fr 1fr}
+    button{width:auto}
+}
+
+/* ===== PRINT ===== */
+@media print{
+    body{background:#fff;padding:0}
+    .form,.actions{display:none}
+}
 </style>
 </head>
 
@@ -33,21 +90,25 @@ button{padding:8px 12px;background:#1a237e;color:#fff;border:none;font-weight:60
 
 <div class="section">
 <h2>Seller Details</h2>
-<div class="flex">
-<input id="sName" placeholder="Seller Name" value="POONAM ENTERPRISES">
-<input id="sGstin" placeholder="GSTIN" value="24HDE7487RE5RT4">
-</div><br>
-<input id="sAddr" placeholder="Address" value="E-251/C, Shyam Vihar, Najafgarh, Delhi-43"><br><br>
-<input id="sBank" placeholder="Bank Details" value="SBI | A/C 2000000004512 | IFSC SBIN0000488">
+<div class="grid grid-2">
+<input id="sName" value="POONAM ENTERPRISES" placeholder="Seller Name">
+<input id="sGstin" value="24HDE7487RE5RT4" placeholder="GSTIN">
+</div>
+<br>
+<input id="sAddr" value="E-251/C, Shyam Vihar, Najafgarh, Delhi-43" placeholder="Address">
+<br><br>
+<input id="sBank" value="SBI | A/C 2000000004512 | IFSC SBIN0000488" placeholder="Bank Details">
 </div>
 
 <div class="section">
 <h2>Buyer Details</h2>
-<div class="flex">
+<div class="grid grid-2">
 <input id="bName" placeholder="Buyer Name">
 <input id="bPhone" placeholder="Phone">
-</div><br>
-<input id="bAddr" placeholder="Address"><br><br>
+</div>
+<br>
+<input id="bAddr" placeholder="Address">
+<br><br>
 <input id="bGstin" placeholder="GSTIN">
 </div>
 
@@ -56,7 +117,12 @@ button{padding:8px 12px;background:#1a237e;color:#fff;border:none;font-weight:60
 <table>
 <thead>
 <tr>
-<th>Description</th><th>HSN</th><th>Qty</th><th>Rate</th><th>GST %</th><th>Action</th>
+<th>Description</th>
+<th>HSN</th>
+<th>Qty</th>
+<th>Rate</th>
+<th>GST%</th>
+<th></th>
 </tr>
 </thead>
 <tbody id="prodBody"></tbody>
@@ -65,7 +131,7 @@ button{padding:8px 12px;background:#1a237e;color:#fff;border:none;font-weight:60
 <button onclick="addRow()">+ Add Product</button>
 </div>
 
-<div class="btns">
+<div class="section actions">
 <button onclick="generate()">Generate Invoice</button>
 </div>
 </div>
@@ -75,17 +141,17 @@ button{padding:8px 12px;background:#1a237e;color:#fff;border:none;font-weight:60
 
 <div class="section text-center">
 <h2>TAX INVOICE</h2>
-<div class="small">Invoice No: <span id="invNo"></span> | Date: <span id="invDate"></span></div>
+<div id="invMeta"></div>
 </div>
 
-<div class="section flex">
-<div class="box">
+<div class="section grid grid-2">
+<div>
 <b>Seller</b><br>
 <span id="isName"></span><br>
 <span id="isAddr"></span><br>
 GSTIN: <span id="isGstin"></span>
 </div>
-<div class="box">
+<div>
 <b>Buyer</b><br>
 <span id="ibName"></span><br>
 <span id="ibAddr"></span><br>
@@ -98,20 +164,27 @@ GSTIN: <span id="ibGstin"></span>
 <table>
 <thead>
 <tr>
-<th>Sr</th><th>Description</th><th>HSN</th><th>Qty</th><th>Rate</th>
-<th>Taxable</th><th>CGST</th><th>SGST</th><th>Total</th>
+<th>Sr</th>
+<th>Description</th>
+<th>HSN</th>
+<th>Qty</th>
+<th>Rate</th>
+<th>Taxable</th>
+<th>CGST</th>
+<th>SGST</th>
+<th>Total</th>
 </tr>
 </thead>
 <tbody id="invRows"></tbody>
 </table>
 </div>
 
-<div class="section flex">
-<div class="box">
+<div class="section grid grid-2">
+<div>
 <b>Amount in Words</b><br>
 <span id="words"></span>
 </div>
-<div class="box">
+<div>
 <div>Taxable: ₹ <span id="tTaxable"></span></div>
 <div>CGST: ₹ <span id="tCgst"></span></div>
 <div>SGST: ₹ <span id="tSgst"></span></div>
@@ -119,41 +192,41 @@ GSTIN: <span id="ibGstin"></span>
 </div>
 </div>
 
-<div class="section flex">
-<div class="box">
+<div class="section grid grid-2">
+<div>
 <b>Bank Details</b><br>
 <span id="isBank"></span>
 </div>
-<div class="box text-center">
+<div class="text-center">
 For <span id="isName2"></span><br><br>
 Authorised Signatory
 </div>
 </div>
 
-<div class="btns">
+<div class="section actions grid grid-2">
 <button onclick="window.print()">Print / Save PDF</button>
-<button onclick="location.reload()">Back</button>
+<button class="btn-secondary" onclick="location.reload()">Back</button>
 </div>
 </div>
 
 <script>
-let count=0;
 function addRow(){
-    prodBody.innerHTML+=`
+    prodBody.insertAdjacentHTML("beforeend",`
     <tr>
-    <td><input></td>
-    <td><input></td>
-    <td><input type="number"></td>
-    <td><input type="number"></td>
-    <td><input type="number" value="18"></td>
-    <td class="text-center"><button onclick="this.parentElement.parentElement.remove()">X</button></td>
-    </tr>`;
+        <td><input></td>
+        <td><input></td>
+        <td><input type="number"></td>
+        <td><input type="number"></td>
+        <td><input type="number" value="18"></td>
+        <td><button onclick="this.closest('tr').remove()">✕</button></td>
+    </tr>`);
 }
 addRow();
 
 function generate(){
-    invNo.innerText="GST-"+Date.now().toString().slice(-6);
-    invDate.innerText=new Date().toLocaleDateString();
+    let invNo="GST-"+Date.now().toString().slice(-6);
+    let date=new Date().toLocaleDateString();
+    invMeta.innerText=`Invoice No: ${invNo} | Date: ${date}`;
 
     isName.innerText=isName2.innerText=sName.value;
     isAddr.innerText=sAddr.value;
@@ -167,24 +240,20 @@ function generate(){
 
     let rows="",taxable=0,cgst=0,sgst=0,total=0;
     [...prodBody.children].forEach((r,i)=>{
-        let d=r.children;
-        let q=+d[2].firstChild.value;
-        let rate=+d[3].firstChild.value;
-        let gst=+d[4].firstChild.value;
-        let t=q*rate;
-        let tax=t*gst/100;
-        let half=tax/2;
+        let d=r.querySelectorAll("input");
+        let q=+d[2].value||0, rate=+d[3].value||0, gst=+d[4].value||0;
+        let t=q*rate, tax=t*gst/100, half=tax/2;
         rows+=`
         <tr>
-        <td class="text-center">${i+1}</td>
-        <td>${d[0].firstChild.value}</td>
-        <td class="text-center">${d[1].firstChild.value}</td>
-        <td class="text-center">${q}</td>
-        <td class="text-right">${rate}</td>
-        <td class="text-right">${t.toFixed(2)}</td>
-        <td class="text-right">${half.toFixed(2)}</td>
-        <td class="text-right">${half.toFixed(2)}</td>
-        <td class="text-right">${(t+tax).toFixed(2)}</td>
+            <td class="text-center">${i+1}</td>
+            <td>${d[0].value}</td>
+            <td class="text-center">${d[1].value}</td>
+            <td class="text-center">${q}</td>
+            <td class="text-right">${rate}</td>
+            <td class="text-right">${t.toFixed(2)}</td>
+            <td class="text-right">${half.toFixed(2)}</td>
+            <td class="text-right">${half.toFixed(2)}</td>
+            <td class="text-right">${(t+tax).toFixed(2)}</td>
         </tr>`;
         taxable+=t; cgst+=half; sgst+=half; total+=t+tax;
     });
@@ -196,8 +265,8 @@ function generate(){
     tGrand.innerText=total.toFixed(2);
     words.innerText=Math.floor(total)+" Rupees Only";
 
-    document.querySelector('.form').classList.add('hide');
-    invoice.classList.remove('hide');
+    document.querySelector(".form").classList.add("hide");
+    invoice.classList.remove("hide");
 }
 </script>
 
