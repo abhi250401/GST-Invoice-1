@@ -6,95 +6,84 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-/* ===== MOBILE ONLY – HARD GUARANTEES ===== */
-* {
-    box-sizing: border-box;
-    max-width: 100%;
+*{box-sizing:border-box}
+body{
+    margin:0;
+    padding:10px;
+    font-family:system-ui,Segoe UI,Arial;
+    background:#f2f2f2;
+    font-size:14px;
 }
-
-body {
-    margin: 0;
-    padding: 10px;
-    font-family: system-ui, -apple-system, Segoe UI, Arial, sans-serif;
-    background: #f2f2f2;
-    font-size: 14px;
+.container{
+    background:#fff;
+    border:1px solid #000;
+    margin-bottom:14px;
 }
-
-.container {
-    width: 100%;
-    background: #fff;
-    border: 1px solid #000;
-    margin-bottom: 14px;
-    overflow-x: hidden;
+.section{
+    padding:12px;
+    border-bottom:1px solid #000;
 }
-
-.section {
-    padding: 12px;
-    border-bottom: 1px solid #000;
+h2{
+    font-size:15px;
+    margin:0 0 8px;
+    border-bottom:1px solid #000;
 }
-
-h2 {
-    font-size: 15px;
-    margin: 0 0 8px;
-    padding-bottom: 4px;
-    border-bottom: 1px solid #000;
+label{
+    font-weight:600;
+    font-size:13px;
+    margin-top:8px;
+    display:block;
 }
-
-label {
-    font-weight: 600;
-    font-size: 13px;
-    display: block;
-    margin-bottom: 4px;
+input{
+    width:100%;
+    padding:12px;
+    border:1px solid #999;
+    font-size:14px;
 }
-
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #999;
-    font-size: 14px;
-    margin-bottom: 10px;
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    background:#1a237e;
+    color:#fff;
+    border:none;
+    font-weight:600;
+    font-size:14px;
 }
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed; /* IMPORTANT */
-    font-size: 13px;
+.secondary{background:#444}
+.list{
+    padding:10px;
+    border:1px solid #ccc;
+    margin-top:8px;
 }
-
-th, td {
-    border: 1px solid #000;
-    padding: 6px;
-    word-wrap: break-word;
+.item{
+    border-bottom:1px dashed #aaa;
+    padding:8px 0;
 }
+.item:last-child{border-bottom:none}
+.small{font-size:12px;color:#333}
+.hide{display:none}
+.text-right{text-align:right}
 
-th {
-    background: #eaeaea;
+/* MODAL */
+.modal{
+    position:fixed;
+    inset:0;
+    background:#fff;
+    z-index:999;
+    padding:15px;
+    overflow:auto;
 }
-
-button {
-    width: 100%;
-    padding: 12px;
-    background: #1a237e;
-    color: #fff;
-    border: none;
-    font-weight: 600;
-    font-size: 14px;
-    margin-top: 8px;
+.modal h2{margin-top:0}
+.actions{
+    display:flex;
+    gap:10px;
 }
+.actions button{width:50%}
 
-button.secondary {
-    background: #444;
-}
-
-.text-right { text-align: right; }
-.text-center { text-align: center; }
-
-.hide { display: none; }
-
-@media print {
-    body { background: #fff; padding: 0; }
-    .form, .actions { display: none; }
+@media print{
+    body{background:#fff;padding:0}
+    .form,.actions,.modal{display:none}
 }
 </style>
 </head>
@@ -106,67 +95,53 @@ button.secondary {
 
 <div class="section">
 <h2>Seller Details</h2>
-
-<label>Seller Name</label>
-<input id="sName" value="POONAM ENTERPRISES">
-
-<label>GSTIN</label>
-<input id="sGstin" value="24HDE7487RE5RT4">
-
-<label>Address</label>
-<input id="sAddr" value="E-251/C, Shyam Vihar, Najafgarh, Delhi-43">
-
-<label>Bank Details</label>
-<input id="sBank" value="SBI | A/C 2000000004512 | IFSC SBIN0000488">
+<label>Name</label><input id="sName" value="POONAM ENTERPRISES">
+<label>GSTIN</label><input id="sGstin" value="24HDE7487RE5RT4">
+<label>Address</label><input id="sAddr" value="E-251/C, Shyam Vihar, Najafgarh, Delhi-43">
+<label>Bank Details</label><input id="sBank" value="SBI | A/C 2000000004512 | IFSC SBIN0000488">
 </div>
 
 <div class="section">
 <h2>Buyer Details</h2>
-
-<label>Buyer Name</label>
-<input id="bName">
-
-<label>Phone</label>
-<input id="bPhone">
-
-<label>Address</label>
-<input id="bAddr">
-
-<label>GSTIN</label>
-<input id="bGstin">
+<label>Name</label><input id="bName">
+<label>Phone</label><input id="bPhone">
+<label>Address</label><input id="bAddr">
+<label>GSTIN</label><input id="bGstin">
 </div>
 
 <div class="section">
 <h2>Products</h2>
-
-<table>
-<thead>
-<tr>
-<th>Description</th>
-<th>HSN</th>
-<th>Qty</th>
-<th>Rate</th>
-<th>GST%</th>
-<th></th>
-</tr>
-</thead>
-<tbody id="prodBody"></tbody>
-</table>
-
-<button onclick="addRow()">+ Add Product</button>
+<div id="productList" class="list"></div>
+<button onclick="openModal()">➕ Add Product</button>
 </div>
 
-<div class="section actions">
+<div class="section">
 <button onclick="generate()">Generate Invoice</button>
+</div>
+
+</div>
+
+<!-- ================= MODAL ================= -->
+<div class="modal hide" id="modal">
+<h2>Add Product</h2>
+
+<label>Description</label><input id="mDesc">
+<label>HSN</label><input id="mHsn">
+<label>Quantity</label><input type="number" id="mQty">
+<label>Rate</label><input type="number" id="mRate">
+<label>GST %</label><input type="number" id="mGst" value="18">
+
+<div class="actions">
+<button onclick="saveProduct()">Save</button>
+<button class="secondary" onclick="closeModal()">Cancel</button>
 </div>
 </div>
 
 <!-- ================= INVOICE ================= -->
 <div class="container hide" id="invoice">
 
-<div class="section text-center">
+<div class="section">
 <h2>TAX INVOICE</h2>
-<div id="meta"></div>
 </div>
 
 <div class="section">
@@ -185,24 +160,11 @@ GSTIN: <span id="ibGstin"></span>
 </div>
 
 <div class="section">
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Description</th>
-<th>Qty</th>
-<th>Taxable</th>
-<th>CGST</th>
-<th>SGST</th>
-<th>Total</th>
-</tr>
-</thead>
-<tbody id="invRows"></tbody>
-</table>
+<b>Items</b>
+<div id="invItems"></div>
 </div>
 
 <div class="section">
-<b>Totals</b><br>
 Taxable: ₹ <span id="tTaxable"></span><br>
 CGST: ₹ <span id="tCgst"></span><br>
 SGST: ₹ <span id="tSgst"></span><br>
@@ -222,59 +184,65 @@ SGST: ₹ <span id="tSgst"></span><br>
 </div>
 
 <script>
-function addRow() {
-    prodBody.insertAdjacentHTML("beforeend", `
-    <tr>
-        <td><input></td>
-        <td><input></td>
-        <td><input type="number"></td>
-        <td><input type="number"></td>
-        <td><input type="number" value="18"></td>
-        <td><button onclick="this.closest('tr').remove()">✕</button></td>
-    </tr>`);
+let products=[];
+
+function openModal(){
+    modal.classList.remove("hide");
 }
-addRow();
+function closeModal(){
+    modal.classList.add("hide");
+    mDesc.value=mHsn.value=mQty.value=mRate.value="";
+    mGst.value=18;
+}
+function saveProduct(){
+    products.push({
+        d:mDesc.value,h:mHsn.value,
+        q:+mQty.value,r:+mRate.value,g:+mGst.value
+    });
+    renderProducts();
+    closeModal();
+}
+function renderProducts(){
+    productList.innerHTML="";
+    products.forEach((p,i)=>{
+        let t=p.q*p.r;
+        productList.innerHTML+=`
+        <div class="item">
+            <b>${p.d}</b><br>
+            <span class="small">Qty ${p.q} × ₹${p.r} | GST ${p.g}%</span>
+            <div class="text-right">₹ ${(t+t*p.g/100).toFixed(2)}</div>
+        </div>`;
+    });
+}
 
-function generate() {
-    meta.innerText = "Invoice No: GST-" + Date.now().toString().slice(-6) +
-                     " | Date: " + new Date().toLocaleDateString();
+function generate(){
+    isName.innerText=sName.value;
+    isAddr.innerText=sAddr.value;
+    isGstin.innerText=sGstin.value;
+    isBank.innerText=sBank.value;
 
-    isName.innerText = sName.value;
-    isAddr.innerText = sAddr.value;
-    isGstin.innerText = sGstin.value;
-    isBank.innerText = sBank.value;
+    ibName.innerText=bName.value;
+    ibAddr.innerText=bAddr.value;
+    ibPhone.innerText=bPhone.value;
+    ibGstin.innerText=bGstin.value;
 
-    ibName.innerText = bName.value;
-    ibAddr.innerText = bAddr.value;
-    ibPhone.innerText = bPhone.value;
-    ibGstin.innerText = bGstin.value;
-
-    let rows="", taxable=0, cgst=0, sgst=0, total=0;
-
-    [...prodBody.rows].forEach((r,i)=>{
-        let ixs = r.querySelectorAll("input");
-        let q=+ixs[2].value||0, rate=+ixs[3].value||0, gst=+ixs[4].value||0;
-        let t=q*rate, tax=t*gst/100, half=tax/2;
-
-        rows+=`
-        <tr>
-            <td class="text-center">${i+1}</td>
-            <td>${ixs[0].value}</td>
-            <td class="text-center">${q}</td>
-            <td class="text-right">${t.toFixed(2)}</td>
-            <td class="text-right">${half.toFixed(2)}</td>
-            <td class="text-right">${half.toFixed(2)}</td>
-            <td class="text-right">${(t+tax).toFixed(2)}</td>
-        </tr>`;
-
-        taxable+=t; cgst+=half; sgst+=half; total+=t+tax;
+    let taxable=0,cgst=0,sgst=0,total=0,html="";
+    products.forEach((p,i)=>{
+        let t=p.q*p.r, tax=t*p.g/100, h=tax/2;
+        html+=`
+        <div class="item">
+            ${i+1}. ${p.d}<br>
+            <span class="small">Taxable ₹${t.toFixed(2)} | CGST ₹${h.toFixed(2)} | SGST ₹${h.toFixed(2)}</span>
+            <div class="text-right">₹ ${(t+tax).toFixed(2)}</div>
+        </div>`;
+        taxable+=t; cgst+=h; sgst+=h; total+=t+tax;
     });
 
-    invRows.innerHTML = rows;
-    tTaxable.innerText = taxable.toFixed(2);
-    tCgst.innerText = cgst.toFixed(2);
-    tSgst.innerText = sgst.toFixed(2);
-    tGrand.innerText = total.toFixed(2);
+    invItems.innerHTML=html;
+    tTaxable.innerText=taxable.toFixed(2);
+    tCgst.innerText=cgst.toFixed(2);
+    tSgst.innerText=sgst.toFixed(2);
+    tGrand.innerText=total.toFixed(2);
 
     document.querySelector(".form").classList.add("hide");
     invoice.classList.remove("hide");
