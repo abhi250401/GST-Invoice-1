@@ -625,7 +625,8 @@
                 </div>
             </div>
 
-            <button class="download-btn" onclick="window.print()">📥 Download / Print PDF</button>
+            <!-- Updated Download PDF Button -->
+            <button class="download-btn" onclick="downloadPdf()">📥 Download PDF</button>
             <button class="back-btn" onclick="backToForm()">← Back to Edit</button>
         </div>
     </div>
@@ -837,6 +838,30 @@
         }
 
         addProduct();
+
+        // PDF EXPORT CODE USING html2pdf.js
+        function downloadPdf() {
+            // Hide back/download buttons before rendering
+            document.querySelector('.back-btn').style.display = 'none';
+            document.querySelector('.download-btn').style.display = 'none';
+
+            const invoice = document.getElementById('invoiceSection');
+            const opt = {
+                margin: [10, 8, 10, 8], // top, left, bottom, right in mm
+                filename: 'gst_invoice.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().from(invoice).set(opt).save().then(() => {
+                // Show them again after PDF generation
+                document.querySelector('.back-btn').style.display = 'block';
+                document.querySelector('.download-btn').style.display = 'block';
+            });
+        }
     </script>
+    <!-- html2pdf.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </body>
 </html>
